@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.pdp.manager.dao.PsychotropicDrugDictMapper">
+  <resultMap id="BaseResultMap" type="com.pdp.manager.pojo.PsychotropicDrugDict">
+    <id column="data_id" jdbcType="INTEGER" property="dataId" />
+    <result column="drug_chn_name" jdbcType="VARCHAR" property="drugChnName" />
+    <result column="drug_eng_name" jdbcType="VARCHAR" property="drugEngName" />
+    <result column="yb_code" jdbcType="VARCHAR" property="ybCode" />
+    <result column="drug_code" jdbcType="VARCHAR" property="drugCode" />
+    <result column="memo" jdbcType="VARCHAR" property="memo" />
+    <result column="drug_type" jdbcType="VARCHAR" property="drugType" />
+    <result column="drug_use" jdbcType="VARCHAR" property="drugUse" />
+    <result column="drug_class" jdbcType="VARCHAR" property="drugClass" />
+    <result column="patient_class" jdbcType="VARCHAR" property="patientClass" />
+    <result column="drug_spec" jdbcType="VARCHAR" property="drugSpec" />
+    <result column="drug_spec_unit" jdbcType="VARCHAR" property="drugSpecUnit" />
+    <result column="drug_apprnum" jdbcType="VARCHAR" property="drugApprnum" />
+    <result column="day_used" jdbcType="VARCHAR" property="dayUsed" />
+    <result column="day_times" jdbcType="VARCHAR" property="dayTimes" />
+    <result column="max_days" jdbcType="TINYINT" property="maxDays" />
+    <result column="is_new" jdbcType="TINYINT" property="isNew" />
+    <result column="creator_id" jdbcType="INTEGER" property="creatorId" />
+    <result column="creator" jdbcType="VARCHAR" property="creator" />
+    <result column="create_date" jdbcType="TIMESTAMP" property="createDate" />
+    <result column="modify_date" jdbcType="TIMESTAMP" property="modifyDate" />
+    <result column="is_valid" jdbcType="TINYINT" property="isValid" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    update t_psychotropic_drug_dict set is_valid=0
+    where data_id = #{dataId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" keyProperty="dataId"  keyColumn="data_id" useGeneratedKeys="true" parameterType="com.pdp.manager.pojo.PsychotropicDrugDict">
+    insert into t_psychotropic_drug_dict (data_id, drug_chn_name, drug_eng_name, 
+      yb_code, drug_code, memo, drug_type, 
+      drug_use, drug_class, patient_class, 
+      drug_spec, drug_spec_unit, drug_apprnum, 
+      day_used, day_times, max_days,
+      is_new,creator_id,creator,create_date,is_valid
+      )
+    values (#{dataId,jdbcType=INTEGER}, #{drugChnName,jdbcType=VARCHAR}, #{drugEngName,jdbcType=VARCHAR}, 
+      #{ybCode,jdbcType=VARCHAR}, #{drugCode,jdbcType=VARCHAR}, #{memo,jdbcType=VARCHAR}, #{drugType,jdbcType=VARCHAR}, 
+      #{drugUse,jdbcType=VARCHAR}, #{drugClass,jdbcType=VARCHAR}, #{patientClass,jdbcType=VARCHAR}, 
+      #{drugSpec,jdbcType=VARCHAR}, #{drugSpecUnit,jdbcType=VARCHAR}, #{drugApprnum,jdbcType=VARCHAR}, 
+      #{dayUsed,jdbcType=VARCHAR}, #{dayTimes,jdbcType=VARCHAR}, #{maxDays,jdbcType=TINYINT},
+      #{isNew,jdbcType=TINYINT},#{creatorId,jdbcType=INTEGER}, #{creator,jdbcType=VARCHAR},
+      #{createDate,jdbcType=TIMESTAMP},#{isValid,jdbcType=TINYINT}
+      )
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.pdp.manager.pojo.PsychotropicDrugDict">
+    update t_psychotropic_drug_dict
+    set drug_chn_name = #{drugChnName,jdbcType=VARCHAR},
+      drug_eng_name = #{drugEngName,jdbcType=VARCHAR},
+      yb_code = #{ybCode,jdbcType=VARCHAR},
+      drug_code = #{drugCode,jdbcType=VARCHAR},
+      memo = #{memo,jdbcType=VARCHAR},
+      drug_type = #{drugType,jdbcType=VARCHAR},
+      drug_use = #{drugUse,jdbcType=VARCHAR},
+      drug_class = #{drugClass,jdbcType=VARCHAR},
+      patient_class = #{patientClass,jdbcType=VARCHAR},
+      drug_spec = #{drugSpec,jdbcType=VARCHAR},
+      drug_spec_unit = #{drugSpecUnit,jdbcType=VARCHAR},
+      drug_apprnum = #{drugApprnum,jdbcType=VARCHAR},
+      day_used = #{dayUsed,jdbcType=VARCHAR},
+      day_times = #{dayTimes,jdbcType=VARCHAR},
+      max_days = #{maxDays,jdbcType=TINYINT},
+      modify_date = #{modifyDate,jdbcType=TIMESTAMP}
+    where data_id = #{dataId,jdbcType=INTEGER}
+  </update>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select data_id, drug_chn_name, drug_eng_name, yb_code, drug_code, memo, drug_type, drug_use, 
+    drug_class, patient_class, drug_spec, drug_spec_unit, drug_apprnum, day_used, day_times, 
+    max_days,is_new,creator_id,creator,create_date,modify_date,is_valid
+    from t_psychotropic_drug_dict
+    where data_id = #{dataId,jdbcType=INTEGER}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select data_id, drug_chn_name, drug_eng_name, yb_code, drug_code, memo, drug_type, drug_use, 
+    drug_class, patient_class, drug_spec, drug_spec_unit, drug_apprnum, day_used, day_times, 
+    max_days,is_new,creator_id,creator,create_date,modify_date,is_valid
+    from t_psychotropic_drug_dict where is_valid=1
+  </select>
+  
+   <select id="getList" resultMap="BaseResultMap">
+    select data_id, drug_chn_name, drug_eng_name, yb_code, drug_code, memo, drug_type, drug_use, 
+    drug_class, patient_class, drug_spec, drug_spec_unit, drug_apprnum, day_used, day_times, 
+    max_days,is_new,creator_id,creator,create_date,modify_date,is_valid
+    from t_psychotropic_drug_dict where is_valid=1
+   
+      <if test="queryStr != null and queryStr != '' ">
+        and (drug_chn_name LIKE '%' #{queryStr} '%'
+         or drug_code LIKE '%' #{queryStr} '%'
+          or drug_type LIKE '%' #{queryStr} '%'
+           or drug_use LIKE '%' #{queryStr} '%'
+            or drug_class LIKE '%' #{queryStr} '%'
+             or drug_apprnum LIKE '%' #{queryStr} '%')
+      </if>
+     
+    order by drug_type desc,data_id asc
+  </select>
+</mapper>

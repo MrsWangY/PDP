@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.pdp.manager.dao.MedicalOrgUserMapper">
+  <resultMap id="BaseResultMap" type="com.pdp.manager.pojo.MedicalOrgUser">
+    <id column="user_id" jdbcType="INTEGER" property="userId" />
+    <result column="user_name" jdbcType="VARCHAR" property="userName" />
+    <result column="login_name" jdbcType="VARCHAR" property="loginName" />
+    <result column="login_pwd" jdbcType="VARCHAR" property="loginPwd" />
+    <result column="tele_phone" jdbcType="VARCHAR" property="telePhone" />
+    <result column="org_code" jdbcType="VARCHAR" property="orgCode" />
+    <result column="org_name" jdbcType="VARCHAR" property="orgName" />
+    <result column="role" jdbcType="VARCHAR" property="role" />
+    <result column="is_valid" jdbcType="TINYINT" property="isValid" />
+    <result column="create_date" jdbcType="TIMESTAMP" property="createDate" />
+    <result column="memo" jdbcType="VARCHAR" property="memo" />
+    <result column="CA_code" jdbcType="VARCHAR" property="CACode" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from t_medical_org_user
+    where user_id = #{userId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" keyProperty="userId"  keyColumn="user_id" useGeneratedKeys="true" parameterType="com.pdp.manager.pojo.MedicalOrgUser">
+    insert into t_medical_org_user (user_id, user_name, login_name, 
+      login_pwd, tele_phone, org_code, 
+      org_name, `role`, is_valid, create_date,
+      memo,CA_code)
+    values (#{userId,jdbcType=INTEGER}, #{userName,jdbcType=VARCHAR}, #{loginName,jdbcType=VARCHAR}, 
+      #{loginPwd,jdbcType=VARCHAR}, #{telePhone,jdbcType=VARCHAR}, #{orgCode,jdbcType=VARCHAR}, 
+      #{orgName,jdbcType=VARCHAR}, #{role,jdbcType=VARCHAR}, #{isValid,jdbcType=TINYINT}, #{createDate,jdbcType=TIMESTAMP}, 
+      #{memo,jdbcType=VARCHAR},#{CACode,jdbcType=VARCHAR})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.pdp.manager.pojo.MedicalOrgUser">
+    update t_medical_org_user
+    set user_name = #{userName,jdbcType=VARCHAR},
+      login_name = #{loginName,jdbcType=VARCHAR},
+      login_pwd = #{loginPwd,jdbcType=VARCHAR},
+      tele_phone = #{telePhone,jdbcType=VARCHAR},
+      org_code = #{orgCode,jdbcType=VARCHAR},
+      org_name = #{orgName,jdbcType=VARCHAR},
+      `role` = #{role,jdbcType=VARCHAR},
+      is_valid = #{isValid,jdbcType=TINYINT},
+      memo = #{memo,jdbcType=VARCHAR},
+      CA_code = #{CACode,jdbcType=VARCHAR}
+    where user_id = #{userId,jdbcType=INTEGER}
+  </update>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select user_id, user_name, login_name, login_pwd, tele_phone, org_code, org_name, 
+    `role`, is_valid, create_date,memo
+    from t_medical_org_user
+    where user_id = #{userId,jdbcType=INTEGER}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select user_id, user_name, login_name, login_pwd, tele_phone, org_code, org_name, 
+    `role`, is_valid, create_date,memo
+    from t_medical_org_user
+     order by role,org_code asc
+  </select>
+  
+   <select id="findByLoginName" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select user_id, user_name, login_name, login_pwd, tele_phone, org_code, org_name, 
+    `role`, is_valid,create_date, memo, CA_code
+    from t_medical_org_user
+    where login_name = #{loginName,jdbcType=VARCHAR} and is_valid=1
+  </select>
+  
+   <select id="getUserByKeyCode" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select user_id, user_name, login_name, login_pwd, tele_phone, org_code, org_name, 
+    `role`, is_valid,create_date, memo, CA_code
+    from t_medical_org_user
+    where CA_code = #{CACode,jdbcType=VARCHAR} and is_valid=1
+  </select>
+  
+  <select id="getUserList"  resultMap="BaseResultMap">
+    select user_id, user_name, login_name, login_pwd,
+     tele_phone, org_code , org_name, 
+    `role`, is_valid ,create_date, memo
+    from t_medical_org_user
+    <where>
+    	
+      <if test="queryStr != null and queryStr != '' ">
+        and (user_name LIKE '%' #{queryStr} '%'
+         or login_name LIKE '%' #{queryStr} '%'
+          or org_name LIKE '%' #{queryStr} '%')
+      </if>
+      
+    </where>
+    order by role,org_code asc
+  </select>
+  
+   <update id="updateUser" parameterType="com.pdp.manager.pojo.MedicalOrgUser">
+    UPDATE t_medical_org_user
+    <set>
+      <if test="userName != null">
+        user_name = #{userName,jdbcType=VARCHAR},
+      </if>
+      <if test="telePhone != null">
+         tele_phone = #{telePhone,jdbcType=VARCHAR},
+      </if>
+      <if test="orgCode != null">
+       org_code = #{orgCode,jdbcType=VARCHAR},
+      </if>
+      <if test="orgName != null">
+         org_name = #{orgName,jdbcType=VARCHAR},
+      </if>
+      <if test="memo != null">
+         memo = #{memo,jdbcType=VARCHAR}
+      </if>
+    </set>
+    WHERE user_id = #{userId,jdbcType=INTEGER}
+  </update>
+  
+    <update id="updateUserStatus">
+    UPDATE t_medical_org_user
+    SET is_valid = #{isValid,jdbcType=INTEGER}
+    WHERE user_id = #{userId,jdbcType=INTEGER}
+  </update>
+  
+   <update id="resetpw">
+    UPDATE t_medical_org_user
+    SET  login_pwd = #{loginPwd,jdbcType=VARCHAR}
+    WHERE user_id = #{userId,jdbcType=INTEGER}
+  </update>
+</mapper>

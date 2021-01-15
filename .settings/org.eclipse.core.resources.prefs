@@ -1,0 +1,10 @@
+eclipse.preferences.version=1
+encoding//src/main/java=UTF-8
+encoding//src/main/resources=UTF-8
+encoding//src/main/resources/application.properties=UTF-8
+encoding//src/main/resources/templates/home.html=UTF-8
+encoding//src/main/resources/templates/login.html=UTF-8
+encoding//src/main/resources/templates/permission/permissionManage.html=UTF-8
+encoding//src/main/resources/templates/role/roleManage.html=UTF-8
+encoding//src/main/resources/templates/user/userManage.html=UTF-8
+encoding/<project>=UTF-8

@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.pdp.manager.dao.RecipelDrugMapper">
+  <resultMap id="BaseResultMap" type="com.pdp.manager.pojo.RecipelDrug">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="data_id" jdbcType="INTEGER" property="dataId" />
+    <result column="recipe_no" jdbcType="VARCHAR" property="recipeNo" />
+    <result column="drug_chn_name" jdbcType="VARCHAR" property="drugChnName" />
+    <result column="drug_eng_name" jdbcType="VARCHAR" property="drugEngName" />
+    <result column="yb_code" jdbcType="VARCHAR" property="ybCode" />
+    <result column="drug_code" jdbcType="VARCHAR" property="drugCode" />
+    <result column="memo" jdbcType="VARCHAR" property="memo" />
+    <result column="drug_type" jdbcType="VARCHAR" property="drugType" />
+    <result column="drug_use" jdbcType="VARCHAR" property="drugUse" />
+    <result column="drug_class" jdbcType="VARCHAR" property="drugClass" />
+    <result column="patient_class" jdbcType="VARCHAR" property="patientClass" />
+    <result column="drug_spec" jdbcType="VARCHAR" property="drugSpec" />
+    <result column="drug_spec_unit" jdbcType="VARCHAR" property="drugSpecUnit" />
+    <result column="drug_apprnum" jdbcType="VARCHAR" property="drugApprnum" />
+    <result column="day_used" jdbcType="VARCHAR" property="dayUsed" />
+    <result column="day_times" jdbcType="VARCHAR" property="dayTimes" />
+    <result column="max_days" jdbcType="TINYINT" property="maxDays" />
+  </resultMap>
+
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from t_recipel_drug
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.pdp.manager.pojo.RecipelDrug">
+    insert into t_recipel_drug (id,data_id,recipe_no, drug_chn_name, drug_eng_name, 
+      yb_code,drug_code, memo, drug_type, 
+      drug_use, drug_class, patient_class, 
+      drug_spec, drug_spec_unit, drug_apprnum, 
+      day_used, day_times, max_days
+      )
+    values (#{id,jdbcType=INTEGER},#{dataId,jdbcType=INTEGER},#{recipeNo,jdbcType=VARCHAR}, 
+      #{drugChnName,jdbcType=VARCHAR}, #{drugEngName,jdbcType=VARCHAR}, 
+      #{ybCode,jdbcType=VARCHAR}, #{drugCode,jdbcType=VARCHAR}, #{memo,jdbcType=VARCHAR}, #{drugType,jdbcType=VARCHAR}, 
+      #{drugUse,jdbcType=VARCHAR}, #{drugClass,jdbcType=VARCHAR}, #{patientClass,jdbcType=VARCHAR}, 
+      #{drugSpec,jdbcType=VARCHAR}, #{drugSpecUnit,jdbcType=VARCHAR}, #{drugApprnum,jdbcType=VARCHAR}, 
+      #{dayUsed,jdbcType=VARCHAR}, #{dayTimes,jdbcType=VARCHAR}, #{maxDays,jdbcType=TINYINT}
+      )
+  </insert>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select id,data_id, recipe_no, drug_chn_name, drug_eng_name, yb_code, drug_code, memo, drug_type, drug_use, 
+    drug_class, patient_class, drug_spec, drug_spec_unit, drug_apprnum, day_used, day_times, 
+    max_days
+    from t_recipel_drug
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select id,data_id, recipe_no, drug_chn_name, drug_eng_name, yb_code, drug_code, memo, drug_type, drug_use, 
+    drug_class, patient_class, drug_spec, drug_spec_unit, drug_apprnum, day_used, day_times, 
+    max_days
+    from t_recipel_drug
+  </select>
+  
+  <select id="getRecipelDrugListByCardId" resultMap="BaseResultMap">
+      select r.data_id, r.org_code, r.recipe_no, r.patient_idcard as patientIdcard, r.recipel_build_date as recipelBuildDate, 
+	    r.recipel_valid_day as recipelValidDay, r.recipel_dispensing_date as recipelDispensingDate, r.is_done as isDone,
+		rd.drug_chn_name,rd.drug_type,rd.drug_code,rd.drug_use,rd.drug_class,rd.max_days,rd.max_days-TIMESTAMPDIFF(DAY, r.recipel_dispensing_date,now()) as diffDays
+      from(select data_id, org_code, recipe_no, patient_idcard,  recipel_build_date, 
+	    recipel_valid_day, recipel_dispensing_date, is_done
+	    from t_recipel r
+	    where is_valid =1 and patient_idcard =#{patientIdcard,jdbcType=VARCHAR}
+	    order by recipel_build_date desc
+	    limit 1
+	 )r
+	left join t_recipel_drug rd on rd.data_id=r.data_id
+  </select>
+  
+  
+</mapper>

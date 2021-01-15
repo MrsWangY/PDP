@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.pdp.manager.dao.SysDictDetailMapper">
+  <resultMap id="BaseResultMap" type="com.pdp.manager.pojo.SysDictDetail">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="dict_code" jdbcType="VARCHAR" property="dictCode" />
+    <result column="code" jdbcType="VARCHAR" property="code" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="creator_id" jdbcType="INTEGER" property="creatorId" />
+    <result column="creator" jdbcType="VARCHAR" property="creator" />
+    <result column="is_del" jdbcType="TINYINT" property="isDel" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from t_sys_dict_detail
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.pdp.manager.pojo.SysDictDetail">
+    insert into t_sys_dict_detail (id, dict_code, code, 
+      `name`, create_time, creator_id, 
+      creator, is_del)
+    values (#{id,jdbcType=INTEGER}, #{dictCode,jdbcType=VARCHAR}, #{code,jdbcType=VARCHAR}, 
+      #{name,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{creatorId,jdbcType=INTEGER}, 
+      #{creator,jdbcType=VARCHAR}, #{isDel,jdbcType=TINYINT})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.pdp.manager.pojo.SysDictDetail">
+    update t_sys_dict_detail
+    set dict_code = #{dictCode,jdbcType=VARCHAR},
+      code = #{code,jdbcType=VARCHAR},
+      `name` = #{name,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      creator_id = #{creatorId,jdbcType=INTEGER},
+      creator = #{creator,jdbcType=VARCHAR},
+      is_del = #{isDel,jdbcType=TINYINT}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select id, dict_code, code, `name`, create_time, creator_id, creator, is_del
+    from t_sys_dict_detail
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select id, dict_code, code, `name`, create_time, creator_id, creator, is_del
+    from t_sys_dict_detail 
+    where is_del=0
+  </select>
+</mapper>

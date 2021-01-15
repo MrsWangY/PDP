@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.pdp.manager.dao.RecipelMapper">
+  <resultMap id="BaseResultMap" type="com.pdp.manager.pojo.Recipel">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="data_id" jdbcType="INTEGER" property="dataId" />
+    <result column="org_code" jdbcType="VARCHAR" property="orgCode" />
+    <result column="org_name" jdbcType="VARCHAR" property="orgName" />
+    <result column="recipe_no" jdbcType="VARCHAR" property="recipeNo" />
+	<result column="recipe_type" jdbcType="VARCHAR" property="recipeType" />
+    <result column="depart_no_exp" jdbcType="VARCHAR" property="departNoExp" />
+    <result column="depart_name_exp" jdbcType="VARCHAR" property="departNameExp" />
+    <result column="recipel_build_doct_no" jdbcType="VARCHAR" property="recipelBuildDoctNo" />
+    <result column="recipel_build_doct_name" jdbcType="VARCHAR" property="recipelBuildDoctName" />
+    <result column="patient_name" jdbcType="VARCHAR" property="patientName" />
+    <result column="patient_idcard" jdbcType="VARCHAR" property="patientIdcard" />
+    <result column="is_idcard_exist" jdbcType="INTEGER" property="isIdcardExist" />
+    <result column="id_card_type_code" jdbcType="VARCHAR" property="idCardTypeCode" />
+    <result column="id_card_type_name" jdbcType="VARCHAR" property="idCardTypeName" />
+    <result column="id_card_value" jdbcType="VARCHAR" property="idCardValue" />
+    <result column="gender_code" jdbcType="VARCHAR" property="genderCode" />
+    <result column="gender_name" jdbcType="VARCHAR" property="genderName" />
+    <result column="patient_bd" jdbcType="DATE" property="patientBd" />
+    <result column="patient_age" jdbcType="INTEGER" property="patientAge" />
+    <result column="medi_rec_no" jdbcType="VARCHAR" property="mediRecNo" />
+    <result column="pathology_diag_code" jdbcType="VARCHAR" property="pathologyDiagCode" />
+    <result column="pathology_diag_name" jdbcType="VARCHAR" property="pathologyDiagName" />
+    <result column="recipel_build_date" jdbcType="TIMESTAMP" property="recipelBuildDate" />
+    <result column="recipel_valid_day" jdbcType="INTEGER" property="recipelValidDay" />
+    <result column="is_overdue" jdbcType="INTEGER" property="isOverdue" />
+    <result column="recipel_dispensing_doct_no" jdbcType="VARCHAR" property="recipelDispensingDoctNo" />
+    <result column="recipel_dispensing_doct_name" jdbcType="VARCHAR" property="recipelDispensingDoctName" />
+    <result column="recipel_dispensing_date" jdbcType="TIMESTAMP" property="recipelDispensingDate" />
+    <result column="is_done" jdbcType="INTEGER" property="isDone" />
+    <result column="is_insist" jdbcType="INTEGER" property="isInsist" />
+    <result column="reason" jdbcType="VARCHAR" property="reason" />
+    <result column="is_valid" jdbcType="INTEGER" property="isValid" />
+    <result column="operate_code" jdbcType="VARCHAR" property="operateCode" />
+    <result column="operator" jdbcType="VARCHAR" property="operator" />
+    <result column="operate_date" jdbcType="TIMESTAMP" property="operateDate" />
+    <result column="modify_date" jdbcType="TIMESTAMP" property="modifyDate" />
+    <result column="memo" jdbcType="VARCHAR" property="memo" />
+  </resultMap>
+
+<insert id="insert"  keyProperty="dataId"  keyColumn="data_id" useGeneratedKeys="true" parameterType="com.pdp.manager.pojo.Recipel">
+    insert into t_recipel (data_id, org_code, org_name, 
+      recipe_no, recipe_type, depart_no_exp, 
+      depart_name_exp, recipel_build_doct_no, 
+      recipel_build_doct_name, patient_name, 
+      patient_idcard, gender_code, 
+      gender_name, patient_bd, patient_age, 
+      medi_rec_no, pathology_diag_code, pathology_diag_name, 
+      recipel_build_date, recipel_valid_day, 
+      operate_code, `operator`, operate_date,
+      is_done,is_insist,is_valid
+      )
+    values (#{dataId,jdbcType=INTEGER}, #{orgCode,jdbcType=VARCHAR}, #{orgName,jdbcType=VARCHAR}, 
+      #{recipeNo,jdbcType=VARCHAR}, #{recipeType,jdbcType=VARCHAR}, #{departNoExp,jdbcType=VARCHAR}, 
+      #{departNameExp,jdbcType=VARCHAR}, #{recipelBuildDoctNo,jdbcType=VARCHAR}, 
+      #{recipelBuildDoctName,jdbcType=VARCHAR}, #{patientName,jdbcType=VARCHAR}, 
+      #{patientIdcard,jdbcType=VARCHAR}, #{genderCode,jdbcType=VARCHAR}, 
+      #{genderName,jdbcType=VARCHAR}, #{patientBd,jdbcType=TIMESTAMP}, #{patientAge,jdbcType=INTEGER}, 
+      #{mediRecNo,jdbcType=VARCHAR}, #{pathologyDiagCode,jdbcType=VARCHAR}, #{pathologyDiagName,jdbcType=VARCHAR}, 
+      #{recipelBuildDate,jdbcType=TIMESTAMP}, #{recipelValidDay,jdbcType=TINYINT}, 
+      #{operateCode,jdbcType=VARCHAR}, #{operator,jdbcType=VARCHAR}, #{operateDate,jdbcType=TIMESTAMP},
+      #{isDone,jdbcType=INTEGER}, #{isInsist,jdbcType=INTEGER}, #{isValid,jdbcType=INTEGER}
+      )
+  </insert>
+  
+  <update id="validRecipel">
+<!--   先无效化之前可能存在的开错药、未交费取药处方记录   -->
+    UPDATE t_recipel set is_valid = 0 where recipe_no = #{recipeNo};  
+<!--   根据开具处方日期，有效化同处方号的最近一条处方记录 （业务上可能有漏洞！！！）   -->
+    UPDATE t_recipel
+    SET is_valid = 1,is_insist = 1,modify_date=now(),reason = #{reason,jdbcType=VARCHAR}
+    where recipe_no = #{recipeNo,jdbcType=VARCHAR} and is_valid=0 order by recipel_build_date desc limit 1;
+  </update>
+
+    <update id="updateDispensingInfo">
+    UPDATE t_recipel
+    <set>
+      <if test="recipelDispensingDoctNo != null">
+        recipel_dispensing_doct_no = #{recipelDispensingDoctNo},
+      </if>
+      <if test="recipelDispensingDoctName != null">
+        recipel_dispensing_doct_name = #{recipelDispensingDoctName},
+      </if>
+      <if test="recipelDispensingDate != null">
+        recipel_dispensing_date = #{recipelDispensingDate},
+      </if>
+        is_done = 1,modify_date=now()
+    </set>
+    where recipe_no = #{recipeNo} and is_valid =1
+  </update>
+  
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select data_id, org_code, org_name, recipe_no, recipe_type, depart_no_exp, depart_name_exp, 
+    recipel_build_doct_no, recipel_build_doct_name, patient_name, patient_idcard, is_idcard_exist, 
+    id_card_type_code, id_card_type_name, id_card_value, gender_code, gender_name, patient_bd, 
+    patient_age, medi_rec_no, pathology_diag_code, pathology_diag_name, recipel_build_date, 
+    recipel_valid_day, is_overdue, recipel_dispensing_doct_no, recipel_dispensing_doct_name, 
+    recipel_dispensing_date, is_done, is_insist, reason, is_valid, operate_code, `operator`, 
+    operate_date, modify_date, memo
+    from t_recipel
+    where data_id = #{dataId,jdbcType=INTEGER}
+  </select>
+  
+   <select id="getRecipelInfo" resultMap="BaseResultMap">
+     select data_id, org_code, org_name, recipe_no, recipe_type, depart_no_exp, depart_name_exp, 
+    recipel_build_doct_no, recipel_build_doct_name, patient_name, patient_idcard, is_idcard_exist, 
+    id_card_type_code, id_card_type_name, id_card_value, gender_code, gender_name, patient_bd, 
+    patient_age, medi_rec_no, pathology_diag_code, pathology_diag_name, recipel_build_date, 
+    recipel_valid_day, is_overdue, recipel_dispensing_doct_no, recipel_dispensing_doct_name, 
+    recipel_dispensing_date, is_done, is_insist, reason, is_valid, operate_code, `operator`, 
+    operate_date, modify_date, memo
+    from t_recipel 
+    where is_valid =1 and patient_idcard = #{patientIdcard,jdbcType=VARCHAR}
+    order by recipel_build_date desc
+    limit 1
+  </select>
+  
+    <select id="getRecipelRecord" resultMap="BaseResultMap">
+	    select org_name,recipel_build_date,patient_name,gender_name,patient_age, CONCAT(LEFT(patient_idcard,3), '****' ,RIGHT(patient_cardid,4)) AS patient_idcard,
+		depart_name_exp,recipel_build_doct_name,pathology_diag_name
+		 from t_recipel where is_valid=1
+		 
+		  <if test="queryStr != null and queryStr != '' ">
+        and (org_name LIKE '%' #{queryStr} '%'
+         or patient_name LIKE '%' #{queryStr} '%'
+          or depart_name_exp LIKE '%' #{queryStr} '%'
+          or recipel_build_doct_name LIKE '%' #{queryStr} '%')
+      </if>
+      
+       <if test="orgCode != null and orgCode != '' ">
+        and org_code=#{orgCode,jdbcType=VARCHAR}
+      </if>
+		order by recipel_build_date desc
+  </select>
+</mapper>

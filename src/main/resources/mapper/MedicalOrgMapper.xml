@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.pdp.manager.dao.MedicalOrgMapper">
+  <resultMap id="BaseResultMap" type="com.pdp.manager.pojo.MedicalOrg">
+    <id column="org_code" jdbcType="VARCHAR" property="orgCode" />
+    <result column="org_name" jdbcType="VARCHAR" property="orgName" />
+    <result column="province_code" jdbcType="VARCHAR" property="provinceCode" />
+    <result column="province" jdbcType="VARCHAR" property="province" />
+    <result column="city_code" jdbcType="VARCHAR" property="cityCode" />
+    <result column="city" jdbcType="VARCHAR" property="city" />
+    <result column="area_code" jdbcType="VARCHAR" property="areaCode" />
+    <result column="area" jdbcType="VARCHAR" property="area" />
+    <result column="org_addr" jdbcType="VARCHAR" property="orgAddr" />
+    <result column="is_valid" jdbcType="TINYINT" property="isValid" />
+    <result column="memo" jdbcType="VARCHAR" property="memo" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from t_medical_org
+    where org_code = #{orgCode,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert"  keyProperty="orgCode"  keyColumn="org_code" useGeneratedKeys="true" parameterType="com.pdp.manager.pojo.MedicalOrg">
+    insert into t_medical_org (org_code, org_name,province_code,province,city_code,city,area_code,area,
+     org_addr,is_valid, memo)
+    values (#{orgCode,jdbcType=VARCHAR}, #{orgName,jdbcType=VARCHAR},
+    #{provinceCode,jdbcType=VARCHAR}, #{province,jdbcType=VARCHAR},
+    #{cityCode,jdbcType=VARCHAR}, #{city,jdbcType=VARCHAR},
+    #{areaCode,jdbcType=VARCHAR}, #{area,jdbcType=VARCHAR},
+     #{orgAddr,jdbcType=VARCHAR}, #{isValid,jdbcType=TINYINT}, 
+      #{memo,jdbcType=VARCHAR})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.pdp.manager.pojo.MedicalOrg">
+    update t_medical_org
+    set org_name = #{orgName,jdbcType=VARCHAR},
+    province_code = #{provinceCode,jdbcType=VARCHAR},
+    province = #{province,jdbcType=VARCHAR},
+    city_code = #{cityCode,jdbcType=VARCHAR},
+    city = #{city,jdbcType=VARCHAR},
+    area_code = #{areaCode,jdbcType=VARCHAR},
+    area = #{area,jdbcType=VARCHAR},
+    org_addr = #{orgAddr,jdbcType=VARCHAR},
+      is_valid = #{isValid,jdbcType=TINYINT},
+      memo = #{memo,jdbcType=VARCHAR}
+    where org_code = #{orgCode,jdbcType=VARCHAR}
+  </update>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select org_code, org_name,province_code,province,city_code,city,area_code,area,org_addr, is_valid, memo
+    from t_medical_org
+    where org_code = #{orgCode,jdbcType=VARCHAR}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select org_code, org_name, province_code,province,city_code,city,area_code,area,org_addr, is_valid, memo
+    from t_medical_org where is_valid=1
+    order by org_code asc
+  </select>
+  
+<!--    <select id="getList" resultType="com.pdp.manager.pojo.MedicalOrg"> -->
+<!--     select org_code as orgCode, org_name as orgName, org_addr as orgAddr, is_valid as isValid, memo -->
+<!--     from t_medical_org where is_valid=1 -->
+    
+<!--   </select> -->
+ <select id="getList"  resultMap="BaseResultMap">
+ 	 select mo.org_code, mo.org_name,mo.province_code,mo.province,mo.city_code,mo.city,mo.area_code,mo.area,
+	 mo.org_addr, mo.is_valid, mo.memo,count(mc.hosp_code) as caseNum
+	    from t_medical_org mo
+	left join t_medical_case mc on mo.org_code = mc.hosp_code and mc.is_cancellation = 0
+		where mo.is_valid=1   
+	<if test="queryStr != null and queryStr != '' ">
+       and mo.org_name LIKE '%' #{queryStr} '%'
+     </if> 
+	group by mo.org_code, mo.org_name,mo.province_code,mo.province,mo.city_code,mo.city,mo.area_code,mo.area,
+	 mo.org_addr, mo.is_valid, mo.memo
+ 	order by mo.org_code asc
+  </select>
+  
+   <update id="updateData" parameterType="com.pdp.manager.pojo.MedicalOrg">
+    UPDATE t_medical_org
+    <set>
+        org_name = #{orgName,jdbcType=VARCHAR},
+        province_code = #{provinceCode,jdbcType=VARCHAR},
+	    province = #{province,jdbcType=VARCHAR},
+	    city_code = #{cityCode,jdbcType=VARCHAR},
+	    city = #{city,jdbcType=VARCHAR},
+	    area_code = #{areaCode,jdbcType=VARCHAR},
+	    area = #{area,jdbcType=VARCHAR},
+	    org_addr = #{orgAddr,jdbcType=VARCHAR},
+        memo = #{memo,jdbcType=VARCHAR}
+    </set>
+     where org_code = #{orgCode,jdbcType=VARCHAR}
+  </update>
+   <update id="updateStatus">
+    UPDATE t_medical_org
+    SET is_valid = #{isValid,jdbcType=INTEGER}
+    WHERE org_code = #{orgCode,jdbcType=VARCHAR}
+  </update>
+</mapper>

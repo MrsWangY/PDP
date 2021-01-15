@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.pdp.manager.dao.LogInfoMapper">
+  <resultMap id="BaseResultMap" type="com.pdp.manager.pojo.LogInfo">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="log_id" jdbcType="INTEGER" property="logId" />
+    <result column="data_id" jdbcType="INTEGER" property="dataId" />
+    <result column="recipe_no" jdbcType="VARCHAR" property="recipeNo" />
+    <result column="oper_type" jdbcType="VARCHAR" property="operType" />
+    <result column="oper_result" jdbcType="VARCHAR" property="operResult" />
+    <result column="fail_reason" jdbcType="VARCHAR" property="failReason" />
+    <result column="fail_times" jdbcType="INTEGER" property="failTimes" />
+    <result column="is_alert" jdbcType="INTEGER" property="isAlert" />
+	<result column="oper_date" jdbcType="TIMESTAMP" property="operDate" />
+    <result column="memo" jdbcType="VARCHAR" property="memo" />
+  </resultMap>
+<insert id="insert" parameterType="com.pdp.manager.pojo.LogInfo">
+    insert into t_log_info (log_id, data_id, `recipe_no`, 
+      oper_type, oper_result, fail_reason, 
+      oper_date, memo)
+    values (#{logId,jdbcType=INTEGER}, #{dataId,jdbcType=INTEGER},#{recipeNo,jdbcType=VARCHAR}, #{operType,jdbcType=VARCHAR}, 
+      #{operResult,jdbcType=VARCHAR}, #{failReason,jdbcType=VARCHAR}, #{operDate,jdbcType=TIMESTAMP}, 
+      #{memo,jdbcType=VARCHAR}
+      )
+  </insert>
+  
+	<select id="getList"  resultMap="BaseResultMap">
+     select * from 
+	(select log_id,recipe_no,oper_type,
+	   case when oper_type='Y' then '验证处方药品' when oper_type='Q' then '强制开药' when oper_type='M' then '药房取药' end as operTypeStr,
+	   oper_result,fail_reason,
+	   case when fail_reason='CCYL' then '超出规定用量' 
+	   		when fail_reason='CF' then '重复开药' 
+	   		when fail_reason='ORG_CF' then '麻卡归属地以外重复开药' 
+	   		when fail_reason='NO_DONE_CF' then '未取药重复开药' 
+	   		when fail_reason='DRUG_CF' then '同药品重复开药' 
+	   		when fail_reason='DRUG_USE_CF' then '同类药品重复开药' 
+	        when fail_reason='CS' then '参数问题'
+	        when fail_reason='XT' then '系统问题' end as failReasonStr,
+	   fail_times,is_alert,oper_date,memo from t_log_info
+	)a 
+	<where>
+	 <if test="queryStr != null and queryStr != '' ">
+        and (a.oper_type LIKE '%' #{queryStr} '%'
+        or a.oper_result LIKE '%' #{queryStr} '%'
+         or a.fail_reason LIKE '%' #{queryStr} '%'
+          or a.recipe_no LIKE '%' #{queryStr} '%')
+      </if>
+      
+      <if test="orgCode != null and orgCode != '' ">
+        and recipe_no LIKE #{orgCode} '_%'
+      </if>
+	</where>
+    order by a.oper_date desc
+  </select>
+  
+   <update id="alertData">
+    UPDATE t_log_info
+    SET is_alert = 1
+   	where recipe_no = #{recipeNo}
+  </update>
+  
+  
+   <update id="unAlertData">
+    UPDATE t_log_info
+    SET is_alert = 0
+   	where recipe_no = #{recipeNo}
+  </update>
+</mapper>

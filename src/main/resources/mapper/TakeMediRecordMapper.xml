@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.pdp.manager.dao.TakeMediRecordMapper">
+  <resultMap id="BaseResultMap" type="com.pdp.manager.pojo.TakeMediRecord">
+    <id column="data_id" jdbcType="INTEGER" property="data_id" />
+    <result column="handbook_num" jdbcType="VARCHAR" property="handbook_num" />
+    <result column="recipel_dispensing_date" jdbcType="TIMESTAMP" property="recipel_dispensing_date" />
+    <result column="depart_no_exp" jdbcType="VARCHAR" property="depart_no_exp" />
+    <result column="depart_name_exp" jdbcType="VARCHAR" property="depart_name_exp" />
+    <result column="drug_name" jdbcType="VARCHAR" property="drug_name" />
+    <result column="drug_spec" jdbcType="TINYINT" property="drug_spec" />
+    <result column="drug_spec_unit" jdbcType="VARCHAR" property="drug_spec_unit" />
+    <result column="quantity" jdbcType="INTEGER" property="quantity" />
+    <result column="recipel_build_doct_no" jdbcType="VARCHAR" property="recipel_build_doct_no" />
+    <result column="recipel_build_doct_name" jdbcType="VARCHAR" property="recipel_build_doct_name" />
+    <result column="recipel_dispensing_doct_no" jdbcType="VARCHAR" property="recipel_dispensing_doct_no" />
+    <result column="recipel_dispensing_doct_name" jdbcType="VARCHAR" property="recipel_dispensing_doct_name" />
+    <result column="back_quantity" jdbcType="INTEGER" property="back_quantity" />
+    <result column="batch_number" jdbcType="VARCHAR" property="batch_number" />
+    <result column="memo" jdbcType="VARCHAR" property="memo" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from t_take_medi_record
+    where data_id = #{data_id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.pdp.manager.pojo.TakeMediRecord">
+    insert into t_take_medi_record (data_id, handbook_num, recipel_dispensing_date, 
+      depart_no_exp, depart_name_exp, drug_name, 
+      drug_spec, drug_spec_unit, quantity, 
+      recipel_build_doct_no, recipel_build_doct_name, 
+      recipel_dispensing_doct_no, recipel_dispensing_doct_name, 
+      back_quantity, batch_number, memo
+      )
+    values (#{data_id,jdbcType=INTEGER}, #{handbook_num,jdbcType=VARCHAR}, #{recipel_dispensing_date,jdbcType=TIMESTAMP}, 
+      #{depart_no_exp,jdbcType=VARCHAR}, #{depart_name_exp,jdbcType=VARCHAR}, #{drug_name,jdbcType=VARCHAR}, 
+      #{drug_spec,jdbcType=TINYINT}, #{drug_spec_unit,jdbcType=VARCHAR}, #{quantity,jdbcType=INTEGER}, 
+      #{recipel_build_doct_no,jdbcType=VARCHAR}, #{recipel_build_doct_name,jdbcType=VARCHAR}, 
+      #{recipel_dispensing_doct_no,jdbcType=VARCHAR}, #{recipel_dispensing_doct_name,jdbcType=VARCHAR}, 
+      #{back_quantity,jdbcType=INTEGER}, #{batch_number,jdbcType=VARCHAR}, #{memo,jdbcType=VARCHAR}
+      )
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.pdp.manager.pojo.TakeMediRecord">
+    update t_take_medi_record
+    set handbook_num = #{handbook_num,jdbcType=VARCHAR},
+      recipel_dispensing_date = #{recipel_dispensing_date,jdbcType=TIMESTAMP},
+      depart_no_exp = #{depart_no_exp,jdbcType=VARCHAR},
+      depart_name_exp = #{depart_name_exp,jdbcType=VARCHAR},
+      drug_name = #{drug_name,jdbcType=VARCHAR},
+      drug_spec = #{drug_spec,jdbcType=TINYINT},
+      drug_spec_unit = #{drug_spec_unit,jdbcType=VARCHAR},
+      quantity = #{quantity,jdbcType=INTEGER},
+      recipel_build_doct_no = #{recipel_build_doct_no,jdbcType=VARCHAR},
+      recipel_build_doct_name = #{recipel_build_doct_name,jdbcType=VARCHAR},
+      recipel_dispensing_doct_no = #{recipel_dispensing_doct_no,jdbcType=VARCHAR},
+      recipel_dispensing_doct_name = #{recipel_dispensing_doct_name,jdbcType=VARCHAR},
+      back_quantity = #{back_quantity,jdbcType=INTEGER},
+      batch_number = #{batch_number,jdbcType=VARCHAR},
+      memo = #{memo,jdbcType=VARCHAR}
+    where data_id = #{data_id,jdbcType=INTEGER}
+  </update>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select data_id, handbook_num, recipel_dispensing_date, depart_no_exp, depart_name_exp, 
+    drug_name, drug_spec, drug_spec_unit, quantity, recipel_build_doct_no, recipel_build_doct_name, 
+    recipel_dispensing_doct_no, recipel_dispensing_doct_name, back_quantity, batch_number, 
+    memo
+    from t_take_medi_record
+    where data_id = #{data_id,jdbcType=INTEGER}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select data_id, handbook_num, recipel_dispensing_date, depart_no_exp, depart_name_exp, 
+    drug_name, drug_spec, drug_spec_unit, quantity, recipel_build_doct_no, recipel_build_doct_name, 
+    recipel_dispensing_doct_no, recipel_dispensing_doct_name, back_quantity, batch_number, 
+    memo
+    from t_take_medi_record
+  </select>
+</mapper>

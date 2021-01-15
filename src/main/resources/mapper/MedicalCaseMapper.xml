@@ -1,0 +1,272 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.pdp.manager.dao.MedicalCaseMapper">
+  <resultMap id="BaseResultMap" type="com.pdp.manager.pojo.MedicalCase">
+    <id column="data_id" jdbcType="INTEGER" property="dataId" />
+    <result column="case_num" jdbcType="VARCHAR" property="caseNum" />
+    <result column="patient_name" jdbcType="VARCHAR" property="patientName" />
+    <result column="patient_gender_code" jdbcType="VARCHAR" property="patientGenderCode" />
+    <result column="patient_gender_name" jdbcType="VARCHAR" property="patientGenderName" />
+    <result column="patient_birthday" jdbcType="TIMESTAMP" property="patientBirthday" />
+    <result column="patient_age" jdbcType="TINYINT" property="patientAge" />
+    <result column="patient_tel" jdbcType="VARCHAR" property="patientTel" />
+    <result column="patient_cardid" jdbcType="VARCHAR" property="patientCardid" />
+    <result column="marital_code" jdbcType="VARCHAR" property="maritalCode" />
+    <result column="marital_name" jdbcType="VARCHAR" property="maritalName" />
+    <result column="occup_code" jdbcType="VARCHAR" property="occupCode" />
+    <result column="occup_name" jdbcType="VARCHAR" property="occupName" />
+    <result column="nation_code" jdbcType="VARCHAR" property="nationCode" />
+    <result column="nation_name" jdbcType="VARCHAR" property="nationName" />
+    <result column="diag_code" jdbcType="VARCHAR" property="diagCode" />
+    <result column="diag_name" jdbcType="VARCHAR" property="diagName" />
+    <result column="diag_time" jdbcType="TIMESTAMP" property="diagTime" />
+    <result column="drug_allergic" jdbcType="VARCHAR" property="drugAllergic" />
+    <result column="drug_usage_history" jdbcType="VARCHAR" property="drugUsageHistory" />
+    <result column="patient_addr" jdbcType="VARCHAR" property="patientAddr" />
+    <result column="patient_unit_addr" jdbcType="VARCHAR" property="patientUnitAddr" />
+    <result column="contactor_name" jdbcType="VARCHAR" property="contactorName" />
+    <result column="contactor_gender_code" jdbcType="VARCHAR" property="contactorGenderCode" />
+    <result column="contactor_gender_name" jdbcType="VARCHAR" property="contactorGenderName" />
+    <result column="contactor_age" jdbcType="TINYINT" property="contactorAge" />
+    <result column="contactor_type_code" jdbcType="VARCHAR" property="contactorTypeCode" />
+    <result column="contactor_type_name" jdbcType="VARCHAR" property="contactorTypeName" />
+    <result column="contactor_tel" jdbcType="VARCHAR" property="contactorTel" />
+    <result column="contactor_cardid" jdbcType="VARCHAR" property="contactorCardid" />
+    <result column="contactor_addr" jdbcType="VARCHAR" property="contactorAddr" />
+    <result column="contactor_unit_addr" jdbcType="VARCHAR" property="contactorUnitAddr" />
+    <result column="hosp_code" jdbcType="VARCHAR" property="hospCode" />
+    <result column="hosp_name" jdbcType="VARCHAR" property="hospName" />
+    <result column="give_card_org_code" jdbcType="VARCHAR" property="giveCardOrgCode" />
+    <result column="give_card_org_name" jdbcType="VARCHAR" property="giveCardOrgName" />
+    <result column="give_card_date" jdbcType="TIMESTAMP" property="giveCardDate" />
+    <result column="file_date" jdbcType="TIMESTAMP" property="fileDate" />
+    <result column="referral_date" jdbcType="TIMESTAMP" property="referralDate" />
+     <result column="referral_reason" jdbcType="VARCHAR" property="referralReason" />
+    <result column="is_cancellation" jdbcType="TINYINT" property="isCancellation" />
+    <result column="cancellation_date" jdbcType="TIMESTAMP" property="cancellationDate" />
+     <result column="cancellation_type" jdbcType="VARCHAR" property="cancellationType" />
+    <result column="cancellation_reason" jdbcType="TINYINT" property="cancellationReason" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from t_medical_case
+    where data_id = #{dataId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert"  keyProperty="dataId"  keyColumn="data_id" useGeneratedKeys="true" parameterType="com.pdp.manager.pojo.MedicalCase">
+    insert into t_medical_case (data_id, case_num, patient_name, 
+      patient_gender_code, patient_gender_name, 
+      patient_birthday,patient_age, patient_tel, patient_cardid, 
+      marital_code, marital_name, occup_code, 
+      occup_name, nation_code, nation_name, 
+      diag_code, diag_name, diag_time, 
+      drug_allergic, drug_usage_history, patient_addr, 
+      patient_unit_addr, contactor_name, contactor_gender_code, 
+      contactor_gender_name, contactor_age, contactor_type_code, 
+      contactor_type_name, contactor_tel, contactor_cardid, 
+      contactor_addr, contactor_unit_addr, hosp_code, 
+      hosp_name, give_card_org_code, give_card_org_name, give_card_date,
+      file_date, referral_date,referral_reason,is_cancellation, cancellation_date
+      )
+    values (#{dataId,jdbcType=INTEGER}, #{caseNum,jdbcType=VARCHAR}, #{patientName,jdbcType=VARCHAR}, 
+      #{patientGenderCode,jdbcType=VARCHAR}, #{patientGenderName,jdbcType=VARCHAR}, 
+      #{patientBirthday,jdbcType=TIMESTAMP}, #{patientAge,jdbcType=TINYINT},#{patientTel,jdbcType=VARCHAR}, #{patientCardid,jdbcType=VARCHAR}, 
+      #{maritalCode,jdbcType=VARCHAR}, #{maritalName,jdbcType=VARCHAR}, #{occupCode,jdbcType=VARCHAR}, 
+      #{occupName,jdbcType=VARCHAR}, #{nationCode,jdbcType=VARCHAR}, #{nationName,jdbcType=VARCHAR}, 
+      #{diagCode,jdbcType=VARCHAR}, #{diagName,jdbcType=VARCHAR}, #{diagTime,jdbcType=TIMESTAMP}, 
+      #{drugAllergic,jdbcType=VARCHAR}, #{drugUsageHistory,jdbcType=VARCHAR}, #{patientAddr,jdbcType=VARCHAR}, 
+      #{patientUnitAddr,jdbcType=VARCHAR}, #{contactorName,jdbcType=VARCHAR}, #{contactorGenderCode,jdbcType=VARCHAR}, 
+      #{contactorGenderName,jdbcType=VARCHAR}, #{contactorAge,jdbcType=TINYINT}, #{contactorTypeCode,jdbcType=VARCHAR}, 
+      #{contactorTypeName,jdbcType=VARCHAR}, #{contactorTel,jdbcType=VARCHAR}, #{contactorCardid,jdbcType=VARCHAR}, 
+      #{contactorAddr,jdbcType=VARCHAR}, #{contactorUnitAddr,jdbcType=VARCHAR}, #{hospCode,jdbcType=VARCHAR}, 
+      #{hospName,jdbcType=VARCHAR}, #{giveCardOrgCode,jdbcType=VARCHAR}, #{giveCardOrgName,jdbcType=VARCHAR}, #{giveCardDate,jdbcType=TIMESTAMP},
+      #{fileDate,jdbcType=TIMESTAMP}, #{referralDate,jdbcType=TIMESTAMP},#{referralReason,jdbcType=VARCHAR},
+       #{isCancellation,jdbcType=TINYINT}, #{cancellationDate,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.pdp.manager.pojo.MedicalCase">
+    update t_medical_case
+    set case_num = #{caseNum,jdbcType=VARCHAR},
+      patient_name = #{patientName,jdbcType=VARCHAR},
+      patient_gender_code = #{patientGenderCode,jdbcType=VARCHAR},
+      patient_gender_name = #{patientGenderName,jdbcType=VARCHAR},
+<!--       patient_birthday = #{patientBirthday,jdbcType=TIMESTAMP}, -->
+<!--       patient_age = #{patientAge,jdbcType=TINYINT}, -->
+      patient_tel = #{patientTel,jdbcType=VARCHAR},
+<!--       patient_cardid = #{patientCardid,jdbcType=VARCHAR}, -->
+      marital_code = #{maritalCode,jdbcType=VARCHAR},
+      marital_name = #{maritalName,jdbcType=VARCHAR},
+      occup_code = #{occupCode,jdbcType=VARCHAR},
+      occup_name = #{occupName,jdbcType=VARCHAR},
+      nation_code = #{nationCode,jdbcType=VARCHAR},
+      nation_name = #{nationName,jdbcType=VARCHAR},
+      diag_code = #{diagCode,jdbcType=VARCHAR},
+      diag_name = #{diagName,jdbcType=VARCHAR},
+      diag_time = #{diagTime,jdbcType=TIMESTAMP},
+      drug_allergic = #{drugAllergic,jdbcType=VARCHAR},
+      drug_usage_history = #{drugUsageHistory,jdbcType=VARCHAR},
+      patient_addr = #{patientAddr,jdbcType=VARCHAR},
+      patient_unit_addr = #{patientUnitAddr,jdbcType=VARCHAR},
+      contactor_name = #{contactorName,jdbcType=VARCHAR},
+      contactor_gender_code = #{contactorGenderCode,jdbcType=VARCHAR},
+      contactor_gender_name = #{contactorGenderName,jdbcType=VARCHAR},
+      contactor_age = #{contactorAge,jdbcType=TINYINT},
+      contactor_type_code = #{contactorTypeCode,jdbcType=VARCHAR},
+      contactor_type_name = #{contactorTypeName,jdbcType=VARCHAR},
+      contactor_tel = #{contactorTel,jdbcType=VARCHAR},
+      contactor_cardid = #{contactorCardid,jdbcType=VARCHAR},
+      contactor_addr = #{contactorAddr,jdbcType=VARCHAR},
+      contactor_unit_addr = #{contactorUnitAddr,jdbcType=VARCHAR},
+      give_card_date = #{giveCardDate,jdbcType=TIMESTAMP}
+    where data_id = #{dataId,jdbcType=INTEGER}
+  </update>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select data_id, case_num, patient_name, patient_gender_code, patient_gender_name, 
+    patient_birthday, patient_age,patient_tel, CONCAT(LEFT(patient_cardid,3), '****' ,RIGHT(patient_cardid,4)) AS patient_cardid, 
+    marital_code, marital_name, occup_code, 
+    occup_name, nation_code, nation_name, diag_code, diag_name, diag_time, drug_allergic, 
+    drug_usage_history, patient_addr, patient_unit_addr, contactor_name, contactor_gender_code, 
+    contactor_gender_name, contactor_age, contactor_type_code, contactor_type_name, contactor_tel, 
+    contactor_cardid, contactor_addr, contactor_unit_addr, hosp_code, hosp_name, give_card_org_code, 
+    give_card_org_name,give_card_date, file_date, referral_date,referral_reason,is_cancellation, cancellation_date,
+    cancellation_type,cancellation_reason
+    from t_medical_case
+    where data_id = #{dataId,jdbcType=INTEGER}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select data_id, case_num, patient_name, patient_gender_code, patient_gender_name, 
+    patient_birthday,patient_age, patient_tel, CONCAT(LEFT(patient_cardid,3), '****' ,RIGHT(patient_cardid,4)) AS patient_cardid,
+     marital_code, marital_name, occup_code, 
+    occup_name, nation_code, nation_name, diag_code, diag_name, diag_time, drug_allergic, 
+    drug_usage_history, patient_addr, patient_unit_addr, contactor_name, contactor_gender_code, 
+    contactor_gender_name, contactor_age, contactor_type_code, contactor_type_name, contactor_tel, 
+    contactor_cardid, contactor_addr, contactor_unit_addr, hosp_code, hosp_name, give_card_org_code, 
+    give_card_org_name, give_card_date,file_date, referral_date,referral_reason,is_cancellation, cancellation_date,
+    cancellation_type,cancellation_reason
+    from t_medical_case
+  </select>
+   <select id="getList" resultMap="BaseResultMap">
+    select data_id, case_num, patient_name, patient_gender_code, patient_gender_name, 
+    patient_birthday,patient_age, patient_tel, CONCAT(LEFT(patient_cardid,3), '****' ,RIGHT(patient_cardid,4)) AS patient_cardid, 
+    marital_code, marital_name, occup_code, 
+    occup_name, nation_code, nation_name, diag_code, diag_name, diag_time, drug_allergic, 
+    drug_usage_history, patient_addr, patient_unit_addr, contactor_name, contactor_gender_code, 
+    contactor_gender_name, contactor_age, contactor_type_code, contactor_type_name, contactor_tel, 
+    contactor_cardid, contactor_addr, contactor_unit_addr, hosp_code, hosp_name, give_card_org_code, 
+    give_card_org_name, give_card_date,file_date, referral_date,referral_reason,is_cancellation, cancellation_date,
+    cancellation_type,cancellation_reason
+    from t_medical_case
+     <where>
+    	
+      <if test="queryStr != null and queryStr != '' ">
+        and (patient_name LIKE '%' #{queryStr} '%'
+         or patient_cardid LIKE '%' #{queryStr} '%'
+          or hosp_name LIKE '%' #{queryStr} '%')
+      </if>
+      
+       <if test="orgCode != null and orgCode != '' ">
+        and hosp_code=#{orgCode,jdbcType=VARCHAR}
+      </if>
+    </where>
+    order by file_date desc
+  </select>
+  
+  
+   <select id="getListByOrgCode" resultMap="BaseResultMap">
+    select data_id, case_num, patient_name, patient_gender_code, patient_gender_name, 
+    patient_birthday,patient_age, patient_tel, CONCAT(LEFT(patient_cardid,3), '****' ,RIGHT(patient_cardid,4)) AS patient_cardid,
+     marital_code, marital_name, occup_code, 
+    occup_name, nation_code, nation_name, diag_code, diag_name, diag_time, drug_allergic, 
+    drug_usage_history, patient_addr, patient_unit_addr, contactor_name, contactor_gender_code, 
+    contactor_gender_name, contactor_age, contactor_type_code, contactor_type_name, contactor_tel, 
+    contactor_cardid, contactor_addr, contactor_unit_addr, hosp_code, hosp_name, give_card_org_code, 
+    give_card_org_name,give_card_date, file_date, referral_date,referral_reason,is_cancellation, cancellation_date,
+    cancellation_type,cancellation_reason
+    from t_medical_case
+     <where>
+       <if test="hospCode != null and hospCode != '' ">
+        and hosp_code=#{hospCode,jdbcType=VARCHAR}
+      </if>
+      and is_cancellation = 0
+    </where>
+    order by file_date desc
+  </select>
+  
+   <select id="redisAll" resultMap="BaseResultMap">
+    select data_id, case_num, patient_name, patient_gender_code, patient_gender_name, 
+    patient_birthday,patient_age, patient_tel,patient_cardid,
+     marital_code, marital_name, occup_code, 
+    occup_name, nation_code, nation_name, diag_code, diag_name, diag_time, drug_allergic, 
+    drug_usage_history, patient_addr, patient_unit_addr, contactor_name, contactor_gender_code, 
+    contactor_gender_name, contactor_age, contactor_type_code, contactor_type_name, contactor_tel, 
+    contactor_cardid, contactor_addr, contactor_unit_addr, hosp_code, hosp_name, give_card_org_code, 
+    give_card_org_name,give_card_date, file_date, referral_date,referral_reason,is_cancellation, cancellation_date,
+    cancellation_type,cancellation_reason
+    from t_medical_case
+     <where>
+      and is_cancellation = 0
+    </where>
+    order by file_date desc
+  </select>
+  
+   <update id="referral">
+    UPDATE t_medical_case
+    SET referral_date =now(),
+	referral_reason = #{referralReason,jdbcType=VARCHAR},
+	is_cancellation = 1,cancellation_date = now()
+   	where data_id = #{dataId,jdbcType=INTEGER}
+  </update>
+  
+  <update id="cancellationData" parameterType="com.pdp.manager.pojo.MedicalCase">
+    UPDATE t_medical_case
+    SET is_cancellation = 1,cancellation_date = now(),cancellation_type=#{cancellationType,jdbcType=VARCHAR},
+    cancellation_reason=#{cancellationReason,jdbcType=VARCHAR}
+   	where data_id = #{dataId,jdbcType=INTEGER}
+  </update>
+  
+  <select id="isExist" resultMap="BaseResultMap">
+     select data_id, case_num, patient_name, patient_gender_code, patient_gender_name, 
+    patient_birthday,patient_age, patient_tel, CONCAT(LEFT(patient_cardid,3), '****' ,RIGHT(patient_cardid,4)) AS patient_cardid,
+     marital_code, marital_name, occup_code, 
+    occup_name, nation_code, nation_name, diag_code, diag_name, diag_time, drug_allergic, 
+    drug_usage_history, patient_addr, patient_unit_addr, contactor_name, contactor_gender_code, 
+    contactor_gender_name, contactor_age, contactor_type_code, contactor_type_name, contactor_tel, 
+    contactor_cardid, contactor_addr, contactor_unit_addr, hosp_code, hosp_name, give_card_org_code, 
+    give_card_org_name, give_card_date,file_date, referral_date,referral_reason,is_cancellation, cancellation_date,
+    cancellation_type,cancellation_reason
+    from t_medical_case
+    where is_cancellation=0 and  patient_cardid = #{patientCardid,jdbcType=VARCHAR}
+  </select>
+  
+  <select id="getMedicalCase" resultMap="BaseResultMap">
+     select data_id, case_num, patient_name, patient_gender_code, patient_gender_name, 
+    patient_birthday,patient_age, patient_tel, CONCAT(LEFT(patient_cardid,3), '****' ,RIGHT(patient_cardid,4)) AS patient_cardid,
+     marital_code, marital_name, occup_code, 
+    occup_name, nation_code, nation_name, diag_code, diag_name, diag_time, drug_allergic, 
+    drug_usage_history, patient_addr, patient_unit_addr, contactor_name, contactor_gender_code, 
+    contactor_gender_name, contactor_age, contactor_type_code, contactor_type_name, contactor_tel, 
+    contactor_cardid, contactor_addr, contactor_unit_addr, hosp_code, hosp_name, give_card_org_code, 
+    give_card_org_name, give_card_date,file_date, referral_date,referral_reason,is_cancellation, cancellation_date,
+    cancellation_type,cancellation_reason
+    from t_medical_case
+    where is_cancellation=0
+    and patient_cardid = #{patientCardid,jdbcType=VARCHAR}
+    and  patient_name = #{patientName,jdbcType=VARCHAR}
+  </select>
+  
+  <update id="autoCancellation">
+    update t_medical_case set is_cancellation=1,cancellation_date=now(),cancellation_type='自动注销',cancellation_reason='定期3个月未复诊'
+	where is_cancellation=0 and is_follow is null
+	and timestampdiff(day,(date_add(date(give_card_date), interval +3 month)),now())>0;
+
+	update t_medical_case set is_cancellation=1,cancellation_date=now(),cancellation_type='自动注销',cancellation_reason='定期3个月未复诊'
+	where is_cancellation=0
+	and data_id in (select a.data_id from 
+	(SELECT t2.data_id, MAX(t2.followup_time) AS maxdate,
+	date_add(date(MAX(t2.followup_time)), interval +3 month) as nextMonth,
+	timestampdiff(day,(date_add(date(MAX(t2.followup_time)), interval +3 month)),now()) as diffDays
+	FROM t_followup_record AS t2
+	where t2.is_valid=1
+	GROUP BY t2.data_id
+	)a where a.diffDays>0);
+  </update>
+  
+</mapper>

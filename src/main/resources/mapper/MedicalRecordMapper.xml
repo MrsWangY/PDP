@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.pdp.manager.dao.MedicalRecordMapper">
+  <resultMap id="BaseResultMap" type="com.pdp.manager.pojo.MedicalRecord">
+    <id column="data_id" jdbcType="INTEGER" property="data_id" />
+    <result column="case_num" jdbcType="VARCHAR" property="case_num" />
+    <result column="year" jdbcType="INTEGER" property="year" />
+    <result column="diag_time" jdbcType="TIMESTAMP" property="diag_time" />
+    <result column="memo" jdbcType="VARCHAR" property="memo" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from t_medical_record
+    where data_id = #{data_id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.pdp.manager.pojo.MedicalRecord">
+    insert into t_medical_record (data_id, case_num, `year`, 
+      diag_time, memo)
+    values (#{data_id,jdbcType=INTEGER}, #{case_num,jdbcType=VARCHAR}, #{year,jdbcType=INTEGER}, 
+      #{diag_time,jdbcType=TIMESTAMP}, #{memo,jdbcType=VARCHAR})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.pdp.manager.pojo.MedicalRecord">
+    update t_medical_record
+    set case_num = #{case_num,jdbcType=VARCHAR},
+      `year` = #{year,jdbcType=INTEGER},
+      diag_time = #{diag_time,jdbcType=TIMESTAMP},
+      memo = #{memo,jdbcType=VARCHAR}
+    where data_id = #{data_id,jdbcType=INTEGER}
+  </update>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select data_id, case_num, `year`, diag_time, memo
+    from t_medical_record
+    where data_id = #{data_id,jdbcType=INTEGER}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select data_id, case_num, `year`, diag_time, memo
+    from t_medical_record
+  </select>
+</mapper>

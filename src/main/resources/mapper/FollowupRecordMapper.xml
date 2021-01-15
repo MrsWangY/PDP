@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.pdp.manager.dao.FollowupRecordMapper">
+  <resultMap id="BaseResultMap" type="com.pdp.manager.pojo.FollowupRecord">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="data_id" jdbcType="INTEGER" property="dataId" />
+    <result column="followup_time" jdbcType="TIMESTAMP" property="followupTime" />
+    <result column="followup_type" jdbcType="VARCHAR" property="followupType" />
+    <result column="memo" jdbcType="VARCHAR" property="memo" />
+    <result column="creator_id" jdbcType="INTEGER" property="creatorId" />
+    <result column="creator" jdbcType="VARCHAR" property="creator" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="modify_time" jdbcType="TIMESTAMP" property="modifyTime" />
+    <result column="is_valid" jdbcType="TINYINT" property="isValid" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+<!--     delete from t_followup_record -->
+<!--     where id = #{id,jdbcType=INTEGER} -->
+	update t_followup_record set is_valid =0
+	where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" keyProperty="id"  keyColumn="id" useGeneratedKeys="true" parameterType="com.pdp.manager.pojo.FollowupRecord">
+    insert into t_followup_record (id, data_id, followup_time, 
+      followup_type, memo,creator_id,creator,create_time,is_valid)
+    values (#{id,jdbcType=INTEGER}, #{dataId,jdbcType=INTEGER}, #{followupTime,jdbcType=TIMESTAMP}, 
+      #{followupType,jdbcType=VARCHAR}, #{memo,jdbcType=VARCHAR},#{creatorId,jdbcType=INTEGER},#{creator,jdbcType=VARCHAR},
+      #{createTime,jdbcType=TIMESTAMP}, #{isValid,jdbcType=TINYINT} );
+      
+      update t_medical_case set is_follow=1 where data_id = #{dataId,jdbcType=INTEGER};
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.pdp.manager.pojo.FollowupRecord">
+    update t_followup_record
+    set followup_time = #{followupTime,jdbcType=TIMESTAMP},
+      followup_type = #{followupType,jdbcType=VARCHAR},
+      memo = #{memo,jdbcType=VARCHAR},
+      modify_time = #{modifyTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select id, data_id, followup_time, followup_type, memo,creator_id,creator,create_time,modify_time,is_valid
+    from t_followup_record
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select fr.id, mc.patient_name as patientName,CONCAT(LEFT(mc.patient_cardid,3), '****' ,RIGHT(mc.patient_cardid,4)) as patientCardid,
+    mc.hosp_code as hospCode,mc.hosp_name as hospName,
+	fr.data_id, fr.followup_time, fr.followup_type, fr.memo,fr.creator_id,fr.creator,fr.create_time,fr.modify_time
+	    from t_followup_record fr
+		left join t_medical_case mc on mc.data_id = fr.data_id
+	     where fr.is_valid =1
+	   <if test="queryStr != null and queryStr != '' ">
+        and mc.patient_name LIKE '%' #{queryStr} '%'
+      </if>
+      
+       <if test="orgCode != null and orgCode != '' ">
+       and mc.hosp_code=#{orgCode,jdbcType=VARCHAR}
+      </if>
+	order by fr.followup_time desc
+
+  </select>
+  
+   <select id="selectWarn" resultType="com.pdp.manager.dto.VWarnFollowDTO">
+    select distinct *,datediff(nextMonth,now()) as diffDays from v_warn_follow
+	where 1=1
+	
+	 <if test="orgCode != null and orgCode != '' ">
+      	and hospCode=#{orgCode,jdbcType=VARCHAR}
+     	</if>
+
+<!-- 	and <![CDATA[datediff(nextMonth,now())>=0 ]]> -->
+	and <![CDATA[datediff(nextMonth,now())<=15]]>
+	order by datediff(nextMonth,now()) asc
+  </select>
+</mapper>

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.pdp.manager.dao.LogSysMapper">
+  <resultMap id="BaseResultMap" type="com.pdp.manager.pojo.LogSys">
+    <id column="log_id" jdbcType="INTEGER" property="logId" />
+    <result column="oper_module" jdbcType="VARCHAR" property="operModule" />
+    <result column="oper_type" jdbcType="VARCHAR" property="operType" />
+    <result column="oper_data_id" jdbcType="VARCHAR" property="operDataId" />
+    <result column="oper_content" jdbcType="VARCHAR" property="operContent" />
+    <result column="oper_result" jdbcType="VARCHAR" property="operResult" />
+    <result column="fail_reason" jdbcType="VARCHAR" property="failReason" />
+    <result column="oper_user_id" jdbcType="INTEGER" property="operUserId" />
+    <result column="oper_user" jdbcType="VARCHAR" property="operUser" />
+    <result column="oper_date" jdbcType="TIMESTAMP" property="operDate" />
+    <result column="memo" jdbcType="VARCHAR" property="memo" />
+  </resultMap>
+  <insert id="insert" parameterType="com.pdp.manager.pojo.LogSys">
+    insert into t_log_sys (log_id, oper_module, oper_type, 
+      oper_data_id, oper_content, oper_result, 
+      fail_reason, oper_user_id, oper_user, 
+      oper_date, memo)
+    values (#{logId,jdbcType=INTEGER}, #{operModule,jdbcType=VARCHAR}, #{operType,jdbcType=VARCHAR}, 
+      #{operDataId,jdbcType=VARCHAR}, #{operContent,jdbcType=VARCHAR}, #{operResult,jdbcType=VARCHAR}, 
+      #{failReason,jdbcType=VARCHAR}, #{operUserId,jdbcType=INTEGER}, #{operUser,jdbcType=VARCHAR}, 
+      #{operDate,jdbcType=TIMESTAMP}, #{memo,jdbcType=VARCHAR})
+  </insert>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select log_id, oper_module, oper_type, oper_data_id, oper_content, oper_result, fail_reason, 
+    oper_user_id, oper_user, oper_date, memo
+    from t_log_sys
+  </select>
+</mapper>

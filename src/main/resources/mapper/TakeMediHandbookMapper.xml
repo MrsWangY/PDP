@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.pdp.manager.dao.TakeMediHandbookMapper">
+  <resultMap id="BaseResultMap" type="com.pdp.manager.pojo.TakeMediHandbook">
+    <id column="data_id" jdbcType="INTEGER" property="data_id" />
+    <result column="handbook_num" jdbcType="VARCHAR" property="handbook_num" />
+    <result column="patient_name" jdbcType="VARCHAR" property="patient_name" />
+    <result column="patient_tel" jdbcType="VARCHAR" property="patient_tel" />
+    <result column="patient_cardid" jdbcType="VARCHAR" property="patient_cardid" />
+    <result column="contactor_name" jdbcType="VARCHAR" property="contactor_name" />
+    <result column="contactor_tel" jdbcType="VARCHAR" property="contactor_tel" />
+    <result column="issuing_time" jdbcType="TIMESTAMP" property="issuing_time" />
+    <result column="expiry_date" jdbcType="VARCHAR" property="expiry_date" />
+    <result column="expiration_time" jdbcType="TIMESTAMP" property="expiration_time" />
+    <result column="hosp_code" jdbcType="VARCHAR" property="hosp_code" />
+    <result column="hosp_name" jdbcType="VARCHAR" property="hosp_name" />
+    <result column="give_card_org_code" jdbcType="VARCHAR" property="give_card_org_code" />
+    <result column="give_card_org_name" jdbcType="VARCHAR" property="give_card_org_name" />
+    <result column="file_date" jdbcType="TIMESTAMP" property="file_date" />
+    <result column="is_cancellation" jdbcType="TINYINT" property="is_cancellation" />
+    <result column="cancellation_date" jdbcType="TIMESTAMP" property="cancellation_date" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from t_take_medi_handbook
+    where data_id = #{data_id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.pdp.manager.pojo.TakeMediHandbook">
+    insert into t_take_medi_handbook (data_id, handbook_num, patient_name, 
+      patient_tel, patient_cardid, contactor_name, 
+      contactor_tel, issuing_time, expiry_date, 
+      expiration_time, hosp_code, hosp_name, 
+      give_card_org_code, give_card_org_name, 
+      file_date, is_cancellation, cancellation_date
+      )
+    values (#{data_id,jdbcType=INTEGER}, #{handbook_num,jdbcType=VARCHAR}, #{patient_name,jdbcType=VARCHAR}, 
+      #{patient_tel,jdbcType=VARCHAR}, #{patient_cardid,jdbcType=VARCHAR}, #{contactor_name,jdbcType=VARCHAR}, 
+      #{contactor_tel,jdbcType=VARCHAR}, #{issuing_time,jdbcType=TIMESTAMP}, #{expiry_date,jdbcType=VARCHAR}, 
+      #{expiration_time,jdbcType=TIMESTAMP}, #{hosp_code,jdbcType=VARCHAR}, #{hosp_name,jdbcType=VARCHAR}, 
+      #{give_card_org_code,jdbcType=VARCHAR}, #{give_card_org_name,jdbcType=VARCHAR}, 
+      #{file_date,jdbcType=TIMESTAMP}, #{is_cancellation,jdbcType=TINYINT}, #{cancellation_date,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.pdp.manager.pojo.TakeMediHandbook">
+    update t_take_medi_handbook
+    set handbook_num = #{handbook_num,jdbcType=VARCHAR},
+      patient_name = #{patient_name,jdbcType=VARCHAR},
+      patient_tel = #{patient_tel,jdbcType=VARCHAR},
+      patient_cardid = #{patient_cardid,jdbcType=VARCHAR},
+      contactor_name = #{contactor_name,jdbcType=VARCHAR},
+      contactor_tel = #{contactor_tel,jdbcType=VARCHAR},
+      issuing_time = #{issuing_time,jdbcType=TIMESTAMP},
+      expiry_date = #{expiry_date,jdbcType=VARCHAR},
+      expiration_time = #{expiration_time,jdbcType=TIMESTAMP},
+      hosp_code = #{hosp_code,jdbcType=VARCHAR},
+      hosp_name = #{hosp_name,jdbcType=VARCHAR},
+      give_card_org_code = #{give_card_org_code,jdbcType=VARCHAR},
+      give_card_org_name = #{give_card_org_name,jdbcType=VARCHAR},
+      file_date = #{file_date,jdbcType=TIMESTAMP},
+      is_cancellation = #{is_cancellation,jdbcType=TINYINT},
+      cancellation_date = #{cancellation_date,jdbcType=TIMESTAMP}
+    where data_id = #{data_id,jdbcType=INTEGER}
+  </update>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select data_id, handbook_num, patient_name, patient_tel, patient_cardid, contactor_name, 
+    contactor_tel, issuing_time, expiry_date, expiration_time, hosp_code, hosp_name, 
+    give_card_org_code, give_card_org_name, file_date, is_cancellation, cancellation_date
+    from t_take_medi_handbook
+    where data_id = #{data_id,jdbcType=INTEGER}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select data_id, handbook_num, patient_name, patient_tel, patient_cardid, contactor_name, 
+    contactor_tel, issuing_time, expiry_date, expiration_time, hosp_code, hosp_name, 
+    give_card_org_code, give_card_org_name, file_date, is_cancellation, cancellation_date
+    from t_take_medi_handbook
+  </select>
+</mapper>
